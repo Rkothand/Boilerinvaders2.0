@@ -1,5 +1,6 @@
 from pickle import TRUE
 import pygame 
+from laser import Laser
 
 class Player(pygame.sprite.Sprite):
     def __init__(self,pos,constraint,speed):
@@ -11,6 +12,8 @@ class Player(pygame.sprite.Sprite):
             self.ready =True
             self.laser_time =0
             self.laser_cooldown = 600
+
+            self.lasers = pygame.sprite.Group()
 
 
     def get_input(self):
@@ -40,9 +43,10 @@ class Player(pygame.sprite.Sprite):
             self.rect.right = self.max_x_constraint
         
     def shoot_laser(self):
-        print('Pew')        
+        self.lasers.add(Laser(self.rect.center,-8,self.rect.bottom))        
 
     def update(self):
         self.get_input()
         self.constraint()
         self.recharge()
+        self.lasers.update()
